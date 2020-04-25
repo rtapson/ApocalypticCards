@@ -23,6 +23,7 @@ type
   end;
 
   IGameData = interface( IGameDataObject )
+    ['{2FF4F25D-CF3C-487F-8C88-F11AD5BC3B6B}']
     //- Getters
     function getSessionID: string;
     function getSessionName: string;

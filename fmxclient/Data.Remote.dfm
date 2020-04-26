@@ -1,7 +1,7 @@
 object RemoteData: TRemoteData
   OldCreateOrder = False
   Height = 399
-  Width = 525
+  Width = 759
   object RESTClient1: TRESTClient
     Accept = 'application/json, text/plain; q=0.9, text/html;q=0.8,'
     AcceptCharset = 'utf-8, *;q=0.8'
@@ -43,7 +43,8 @@ object RemoteData: TRemoteData
     Client = RESTClient1
     Params = <
       item
-        Name = 'GameID'
+        Kind = pkHTTPHEADER
+        Name = 'authentication-string'
       end>
     Resource = 'users'
     Response = PollingForUsersResponse
@@ -58,9 +59,34 @@ object RemoteData: TRemoteData
   end
   object PollingForUsersTimer: TTimer
     Enabled = False
-    Interval = 3000
+    Interval = 6000
     OnTimer = PollingForUsersTimerTimer
-    Left = 432
-    Top = 48
+    Left = 336
+    Top = 144
+  end
+  object PollingForGamesRequest: TRESTRequest
+    Client = RESTClient1
+    Params = <
+      item
+        Kind = pkHTTPHEADER
+        Name = 'authentication-string'
+      end>
+    Resource = 'games'
+    Response = PollingForGamesResponse
+    SynchronizedEvents = False
+    Left = 488
+    Top = 24
+  end
+  object PollingForGamesResponse: TRESTResponse
+    ContentType = 'text/html'
+    Left = 488
+    Top = 80
+  end
+  object PollingForGamesTimer: TTimer
+    Enabled = False
+    Interval = 5000
+    OnTimer = PollingForGamesTimerTimer
+    Left = 488
+    Top = 144
   end
 end

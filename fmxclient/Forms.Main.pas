@@ -32,27 +32,28 @@ implementation
 
 {$R *.fmx}
 
-uses System.Messaging, Data.Main, System.Rtti;
+uses Data.Main, System.Rtti, System.Messaging, Frames.JoinGame;
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
-  // subscribe to changes to CurrentView
-  TMessageManager.DefaultManager.SubscribeToMessage(
-    TCurrentViewChanged
-  , procedure(const Sender: TObject; const M: TMessage)
+  TCurrentViewChanged.Subscribe(
+    procedure(const Sender: TObject; const M: TMessage)
     var
       LCurrentView: TAppView;
     begin
       LCurrentView := (M as TCurrentViewChanged).Value;
       case LCurrentView of
         Home       : begin
-          FrameStand1.New<THomeFrame>(MainContentLayout).Show;
+          FrameStand1.New<THomeFrame>(MainContentLayout, 'apocalypseBackground').Show;
         end;
         CreateGame : begin
           FrameStand1.New<TCreateGameFrame>(MainContentLayout, 'solidBackground').Show;
         end;
         GreenRoom : begin
           FrameStand1.New<TGreenRoomFrame>(MainContentLayout, 'solidBackground').Show;
+        end;
+        JoinGame : begin
+          FrameStand1.New<TJoinFrame>(MainContentLayout, 'solidBackground').Show;
         end;
 
       end;

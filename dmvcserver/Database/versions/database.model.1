@@ -1,0 +1,419 @@
+object AppMetaData: TAppMetaData
+  PrjName = 'ApocalypticCards'
+  PrjAuthor = 'ApocalypticCards Team'
+  VersionControlPath = '%projectdir%\versions'
+  UserOptions.Strings = (
+    'fmGenerateScript_Tables=1'
+    'fmGenerateScript_Indexes=1'
+    'fmGenerateScript_Triggers=1'
+    'fmGenerateScript_Relationships=1'
+    'fmGenerateScript_Domains=1'
+    'fmGenerateScript_Procedures=1'
+    'fmGenerateScript_Views=1')
+  DataDictionary.DatabaseTypeID = 'mssql2016'
+  DataDictionary.NextTableID = 4
+  DataDictionary.NextFieldID = 18
+  DataDictionary.NextConstraintID = 1
+  DataDictionary.NextIndexID = 1
+  DataDictionary.NextRelationshipID = 2
+  DataDictionary.Domains = <>
+  DataDictionary.Tables = <
+    item
+      TableName = 'tbl_games'
+      TID = 1
+      OidIndex = 0
+      Fields = <
+        item
+          FieldName = 'PKID'
+          DataTypeName = 'VarChar'
+          Size = 40
+          Size2 = 0
+          Required = True
+          FID = 1
+          DefaultValueSpecific = False
+          RequiredSpecific = False
+          ConstraintExprSpecific = False
+          SeedValue = 0
+          IncrementValue = 1
+          GeneratedByRelationship = False
+        end
+        item
+          FieldName = 'Running'
+          DataTypeName = 'Bit'
+          Size = 0
+          Size2 = 0
+          Required = True
+          FID = 2
+          DefaultValueSpecific = False
+          RequiredSpecific = False
+          ConstraintExprSpecific = False
+          SeedValue = 0
+          IncrementValue = 1
+          GeneratedByRelationship = False
+        end
+        item
+          FieldName = 'SessionName'
+          DataTypeName = 'VarChar'
+          Size = 45
+          Size2 = 0
+          Required = True
+          FID = 3
+          DefaultValueSpecific = False
+          RequiredSpecific = False
+          ConstraintExprSpecific = False
+          SeedValue = 0
+          IncrementValue = 1
+          GeneratedByRelationship = False
+        end
+        item
+          FieldName = 'SessionPW'
+          DataTypeName = 'VarChar'
+          Size = 45
+          Size2 = 0
+          Required = True
+          FID = 4
+          DefaultValueSpecific = False
+          RequiredSpecific = False
+          ConstraintExprSpecific = False
+          SeedValue = 0
+          IncrementValue = 1
+          GeneratedByRelationship = False
+        end
+        item
+          FieldName = 'LangID'
+          DataTypeName = 'VarChar'
+          Size = 2
+          Size2 = 0
+          Required = True
+          FID = 5
+          DefaultValueSpecific = False
+          RequiredSpecific = False
+          ConstraintExprSpecific = False
+          SeedValue = 0
+          IncrementValue = 1
+          GeneratedByRelationship = False
+        end
+        item
+          FieldName = 'MinUser'
+          DataTypeName = 'Int'
+          Size = 0
+          Size2 = 0
+          Required = True
+          FID = 6
+          DefaultValueSpecific = False
+          RequiredSpecific = False
+          ConstraintExprSpecific = False
+          SeedValue = 0
+          IncrementValue = 1
+          GeneratedByRelationship = False
+        end
+        item
+          FieldName = 'MaxUser'
+          DataTypeName = 'Int'
+          Size = 0
+          Size2 = 0
+          Required = True
+          FID = 7
+          DefaultValueSpecific = False
+          RequiredSpecific = False
+          ConstraintExprSpecific = False
+          SeedValue = 0
+          IncrementValue = 1
+          GeneratedByRelationship = False
+        end
+        item
+          FieldName = 'CurrentUser'
+          DataTypeName = 'VarChar'
+          Size = 40
+          Size2 = 0
+          Required = False
+          FID = 8
+          DefaultValueSpecific = False
+          RequiredSpecific = False
+          ConstraintExprSpecific = False
+          SeedValue = 0
+          IncrementValue = 1
+          GeneratedByRelationship = False
+        end
+        item
+          FieldName = 'LastUpdate'
+          DataTypeName = 'Datetime'
+          Size = 0
+          Size2 = 0
+          DefaultValue = 'getutcdate()'
+          Required = True
+          FID = 9
+          DefaultValueSpecific = False
+          RequiredSpecific = False
+          ConstraintExprSpecific = False
+          ConstraintDefaultName = 'DF_tbl_games_CreateDate_GETDATE'
+          SeedValue = 0
+          IncrementValue = 1
+          GeneratedByRelationship = False
+        end>
+      Indexes = <>
+      Constraints = <>
+      Triggers = <>
+      PrimaryKeyIndex.IndexName = 'PK__tbl_game__5E028272CD8221C8'
+      PrimaryKeyIndex.IndexType = itNone
+      PrimaryKeyIndex.IndexOrder = ioAscending
+      PrimaryKeyIndex.IID = 0
+      PrimaryKeyIndex.IFields = <
+        item
+          FieldIndex = 0
+          FieldOrder = ioAsc
+          KeyByRelationship = False
+        end>
+    end
+    item
+      TableName = 'tbl_questions'
+      TID = 2
+      OidIndex = 0
+      Fields = <
+        item
+          FieldName = 'str_pkid'
+          DataTypeName = 'VarChar'
+          Size = 40
+          Size2 = 0
+          Required = True
+          FID = 10
+          DefaultValueSpecific = False
+          RequiredSpecific = False
+          ConstraintExprSpecific = False
+          SeedValue = 0
+          IncrementValue = 1
+          GeneratedByRelationship = False
+        end
+        item
+          FieldName = 'str_question'
+          DataTypeName = 'Text'
+          Size = 0
+          Size2 = 0
+          Required = True
+          FID = 11
+          DefaultValueSpecific = False
+          RequiredSpecific = False
+          ConstraintExprSpecific = False
+          SeedValue = 0
+          IncrementValue = 1
+          GeneratedByRelationship = False
+        end
+        item
+          FieldName = 'LastUpdate'
+          DataTypeName = 'Datetime'
+          Size = 0
+          Size2 = 0
+          DefaultValue = 'GETUTCDATE()'
+          Required = True
+          FID = 17
+          DefaultValueSpecific = False
+          RequiredSpecific = False
+          ConstraintExprSpecific = False
+          ConstraintDefaultName = 'DK_tbl_questions_Last_Updated'
+          SeedValue = 0
+          IncrementValue = 1
+          GeneratedByRelationship = False
+        end>
+      Indexes = <>
+      Constraints = <>
+      Triggers = <>
+      PrimaryKeyIndex.IndexName = 'PK__tbl_ques__2ED30809B44DD4BE'
+      PrimaryKeyIndex.IndexType = itNone
+      PrimaryKeyIndex.IndexOrder = ioAscending
+      PrimaryKeyIndex.IID = 0
+      PrimaryKeyIndex.IFields = <
+        item
+          FieldIndex = 0
+          FieldOrder = ioAsc
+          KeyByRelationship = False
+        end>
+    end
+    item
+      TableName = 'tbl_users'
+      TID = 3
+      OidIndex = 0
+      Fields = <
+        item
+          FieldName = 'PKID'
+          DataTypeName = 'VarChar'
+          Size = 40
+          Size2 = 0
+          Required = True
+          FID = 12
+          DefaultValueSpecific = False
+          RequiredSpecific = False
+          ConstraintExprSpecific = False
+          SeedValue = 0
+          IncrementValue = 1
+          GeneratedByRelationship = False
+        end
+        item
+          FieldName = 'FKGameID'
+          DataTypeName = 'VarChar'
+          Size = 40
+          Size2 = 0
+          Required = True
+          FID = 13
+          DefaultValueSpecific = False
+          RequiredSpecific = False
+          ConstraintExprSpecific = False
+          SeedValue = 0
+          IncrementValue = 1
+          GeneratedByRelationship = False
+        end
+        item
+          FieldName = 'Name'
+          DataTypeName = 'VarChar'
+          Size = 255
+          Size2 = 0
+          Required = False
+          FID = 14
+          DefaultValueSpecific = False
+          RequiredSpecific = False
+          ConstraintExprSpecific = False
+          SeedValue = 0
+          IncrementValue = 1
+          GeneratedByRelationship = False
+        end
+        item
+          FieldName = 'Deleted'
+          DataTypeName = 'Bit'
+          Size = 0
+          Size2 = 0
+          DefaultValue = '0'
+          Required = False
+          FID = 15
+          DefaultValueSpecific = False
+          RequiredSpecific = False
+          ConstraintExprSpecific = False
+          ConstraintDefaultName = 'DF_tbl_Users_Deleted_User'
+          SeedValue = 0
+          IncrementValue = 1
+          GeneratedByRelationship = False
+        end
+        item
+          FieldName = 'LastUpdate'
+          DataTypeName = 'Datetime'
+          Size = 0
+          Size2 = 0
+          DefaultValue = 'GETUTCDATE()'
+          Required = True
+          FID = 16
+          DefaultValueSpecific = False
+          RequiredSpecific = False
+          ConstraintExprSpecific = False
+          ConstraintDefaultName = 'DK_tbl_users_Last_Update'
+          SeedValue = 0
+          IncrementValue = 1
+          GeneratedByRelationship = False
+        end>
+      Indexes = <>
+      Constraints = <>
+      Triggers = <>
+      PrimaryKeyIndex.IndexName = 'PK__tbl_user__5E028272B5BD7536'
+      PrimaryKeyIndex.IndexType = itNone
+      PrimaryKeyIndex.IndexOrder = ioAscending
+      PrimaryKeyIndex.IID = 0
+      PrimaryKeyIndex.IFields = <
+        item
+          FieldIndex = 0
+          FieldOrder = ioAsc
+          KeyByRelationship = False
+        end>
+    end>
+  DataDictionary.Relationships = <
+    item
+      RelationshipName = 'keyGames'
+      ParentTableIndex = 0
+      ChildTableIndex = 2
+      UpdateMethod = umRestrict
+      DeleteMethod = dmCascade
+      RelID = 1
+      FieldLinks = <
+        item
+          ParentFieldName = 'PKID'
+          ChildFieldName = 'FKGameID'
+        end>
+      ParentIndexID = 0
+      RelationshipType = ryUndefined
+    end>
+  DataDictionary.Categories = <
+    item
+      CategoryType = ctProcedure
+      Objects = <>
+    end
+    item
+      CategoryType = ctView
+      Objects = <>
+    end>
+  DiagramObj.Diagrams = <
+    item
+      DiagramName = 'Main Diagram'
+      DiagramString = 
+        'object TDiagramClass'#13#10'  NettoExportOffset = 3'#13#10'  AutomaticNodes ' +
+        '= False'#13#10'  AutoScroll = True'#13#10'  Background.Scroll = True'#13#10'  Back' +
+        'ground.Style = biTile'#13#10'  Background.Visible = False'#13#10'  Backgroun' +
+        'd.Gradient.Direction = grTopBottom'#13#10'  Background.Gradient.StartC' +
+        'olor = clWhite'#13#10'  Background.Gradient.EndColor = clYellow'#13#10'  Bac' +
+        'kground.Gradient.Visible = False'#13#10'  Background.PrintGradient = F' +
+        'alse'#13#10'  SnapGrid.Active = False'#13#10'  SnapGrid.Force = False'#13#10'  Sna' +
+        'pGrid.Visible = False'#13#10'  SnapGrid.SizeX = 8.000000000000000000'#13#10 +
+        '  SnapGrid.SizeY = 8.000000000000000000'#13#10'  SnapGrid.Style = gsDo' +
+        'ts'#13#10'  SnapGrid.SnapToRuler = False'#13#10'  LeftRuler.Visible = False'#13 +
+        #10'  LeftRuler.Divisions = 5'#13#10'  LeftRuler.Font.Charset = DEFAULT_C' +
+        'HARSET'#13#10'  LeftRuler.Font.Color = clWindowText'#13#10'  LeftRuler.Font.' +
+        'Height = -9'#13#10'  LeftRuler.Font.Name = '#39'Arial'#39#13#10'  LeftRuler.Font.S' +
+        'tyle = []'#13#10'  LeftRuler.Units = unCenti'#13#10'  LeftRuler.MinorTickLen' +
+        'gth = 4'#13#10'  LeftRuler.MajorTickLength = 6'#13#10'  LeftRuler.Color = cl' +
+        'White'#13#10'  LeftRuler.TickColor = clBlack'#13#10'  LeftRuler.Size = 16'#13#10' ' +
+        ' LeftRuler.AutoFactor = True'#13#10'  LeftRuler.GridColor = clBlack'#13#10' ' +
+        ' TopRuler.Visible = False'#13#10'  TopRuler.Divisions = 5'#13#10'  TopRuler.' +
+        'Font.Charset = DEFAULT_CHARSET'#13#10'  TopRuler.Font.Color = clWindow' +
+        'Text'#13#10'  TopRuler.Font.Height = -9'#13#10'  TopRuler.Font.Name = '#39'Arial' +
+        #39#13#10'  TopRuler.Font.Style = []'#13#10'  TopRuler.Units = unCenti'#13#10'  Top' +
+        'Ruler.MinorTickLength = 4'#13#10'  TopRuler.MajorTickLength = 6'#13#10'  Top' +
+        'Ruler.Color = clWhite'#13#10'  TopRuler.TickColor = clBlack'#13#10'  TopRule' +
+        'r.Size = 16'#13#10'  TopRuler.AutoFactor = True'#13#10'  TopRuler.GridColor ' +
+        '= clBlack'#13#10'  Zoom = 100'#13#10'  BorderColor = clGray'#13#10'  MouseWheelMod' +
+        'e = mwVertical'#13#10'  ActiveLayers = 0'#13#10'  Layers = <>'#13#10'  LinkCursor ' +
+        '= crHandPoint'#13#10'  PanCursor = crHandPoint'#13#10'  ZoomCursor = crDefau' +
+        'lt'#13#10'  IgnoreScreenDPI = False'#13#10'  ShowCrossIndicators = False'#13#10'  ' +
+        'KeyActions = [kaEscape, kaMove, kaPage, kaResize, kaSelect]'#13#10'  S' +
+        'moothMode = smAntiAlias'#13#10'  TextRenderingMode = tmAntiAlias'#13#10'  Se' +
+        'lectionMode = slmMultiple'#13#10'  CanMoveOutOfBounds = True'#13#10'  PageSe' +
+        'ttings.PaperName = '#39'Letter'#39#13#10'  PageSettings.PaperId = 1'#13#10'  PageS' +
+        'ettings.PaperWidth = 215.900000000000000000'#13#10'  PageSettings.Pape' +
+        'rHeight = 279.400000000000000000'#13#10'  PageSettings.Orientation = d' +
+        'poPortrait'#13#10'  PageSettings.LeftMarginStr = '#39'25.4'#39#13#10'  PageSetting' +
+        's.TopMarginStr = '#39'25.4'#39#13#10'  PageSettings.RightMarginStr = '#39'25.4'#39#13 +
+        #10'  PageSettings.BottomMarginStr = '#39'25.4'#39#13#10'  RulerAutoUnit = Fals' +
+        'e'#13#10'  BorderStyle = bsNone'#13#10'  Color = clWhite'#13#10'  ParentColor = Fa' +
+        'lse'#13#10'  DisplayRelationshipNames = False'#13#10'  LinkRelationshipsToFi' +
+        'elds = False'#13#10'  ShowCaptions = False'#13#10'  StraightRelationshipLine' +
+        's = True'#13#10'  ExplicitWidth = 692'#13#10'  ExplicitHeight = 522'#13#10'end'#13#10
+    end>
+  AureliusExportOptions = 
+    '<Mappings RegisterEntities="true" NoNullable="true" DefaultAssoc' +
+    'iationCascadeDefinition="allbutremove">'#13#10'  <ProjectFile/>'#13#10'  <Ou' +
+    'tputDir>C:\Code\ApocalypticCards\dmvcserver\Entities</OutputDir>' +
+    #13#10'  <MainUnitName>apcardscontext</MainUnitName>'#13#10'  <DictionaryNa' +
+    'me>Dic</DictionaryName>'#13#10'  <DictionaryUnitName/>'#13#10'  <Script>proc' +
+    'edure OnColumnGenerated(Args: TColumnGeneratedArgs);'#13#10'begin'#13#10'{  ' +
+    'if Args.Field.Name = '#39'FPKID'#39' then'#13#10'  begin          '#13#10'    Args.C' +
+    'olumnAttr.Arguments.Delete(1);            '#13#10'    Args.ColumnAttr.' +
+    'AddRawArgument('#39'[TIdGenerator.Uuid38]'#39');'#13#10'  end;}    '#13#10#13#10'  if Ar' +
+    'gs.Field.Name = '#39'FLastUpdate'#39' then'#13#10'  begin          '#13#10'    Args.' +
+    'ColumnAttr.Arguments.Delete(1);  '#13#10'    Args.ColumnAttr.AddRawArg' +
+    'ument('#39'[TColumnProp.NoInsert, TColumnProp.NoUpdate]'#39');  '#13#10'  end;' +
+    '    '#13#10'end'#13#10#13#10'procedure OnClassGenerated(Args: TClassGeneratedArg' +
+    's);'#13#10'var'#13#10'  Attr: TCodeAttributeDeclaration;'#13#10'  i: Integer;'#13#10'beg' +
+    'in                      '#13#10'  for I := 0 to Args.CodeType.CustomAt' +
+    'tributes.Count - 1 do'#13#10'  begin'#13#10'    Attr := Args.CodeType.Custom' +
+    'Attributes[i];'#13#10'    if Attr.Name = '#39'Id'#39' then'#13#10'    begin'#13#10'      T' +
+    'CodeSnippetExpression(Attr.Arguments[1].Value).Value := '#39'TIdGene' +
+    'rator.Uuid38'#39';'#13#10'    end;'#13#10'  end;'#13#10'end;</Script>'#13#10'  <TableNaming ' +
+    'Source="caption" Format="T%s"/>'#13#10'  <FieldNaming Source="caption"' +
+    ' Format="%s"/>'#13#10'  <AssociationNaming Source="ChildFieldCaption" ' +
+    'Format="%s"/>'#13#10'  <ManyValuedNaming Source="ChildTableCaption" Fo' +
+    'rmat="%sList"/>'#13#10'  <Tables/>'#13#10'  <Associations/>'#13#10'</Mappings>'#13#10
+end

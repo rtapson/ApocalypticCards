@@ -25,6 +25,7 @@ type
     PollingForGamesTimer: TTimer;
     procedure PollingForUsersTimerTimer(Sender: TObject);
     procedure PollingForGamesTimerTimer(Sender: TObject);
+    procedure DataModuleCreate(Sender: TObject);
   private
     FPollingForUsers: Boolean;
     FPollingForGames: Boolean;
@@ -108,6 +109,7 @@ var
 begin
   LGameJSON := TJson.ObjectToJsonString(AGameData.AsObject);
 
+  GameRequest.Body.ClearBody;
   GameRequest.Body.Add(LGameJSON, ctAPPLICATION_JSON);
   GameRequest.ExecuteAsync(
     procedure
@@ -127,6 +129,13 @@ begin
 
 end;
 
+procedure TRemoteData.DataModuleCreate(Sender: TObject);
+begin
+  if paramstr(1)='debug' then begin
+    RESTClient1.BaseURL := 'http://localhost:8080';
+  end;
+end;
+
 procedure TRemoteData.JoinGame(const AUserName, ASessionID: string;
   const AOnSuccess: TProc; const AOnError: TErrorProc);
 var
@@ -142,13 +151,14 @@ begin
     begin
       MainData.UserData := TJson.JsonToObject<TUserData>(UsersResponse.Content);
 
-      MainData.Games.ForEach(
-        procedure (const game: IGameData)
-        begin
-          if (MainData.CurrentGame <> game) and (game.SessionID = ASessionID) then
-            MainData.CurrentGame := game;
-        end
-      );
+      if Assigned(MainData.Games) then
+        MainData.Games.ForEach(
+          procedure (const game: IGameData)
+          begin
+            if (MainData.CurrentGame <> game) and (game.SessionID = ASessionID) then
+              MainData.CurrentGame := game;
+          end
+        );
 
       if Assigned(AOnSuccess) then
         AOnSuccess();
@@ -177,6 +187,7 @@ begin
   , procedure (AObj: TObject)
     begin
       // do nothing on error
+
     end
   );
 end;

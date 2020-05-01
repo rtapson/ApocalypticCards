@@ -9,7 +9,7 @@ uses
 
 type
 
-  [MVCPath('/')]
+  [MVCPath('/api')]
   TGameDataController = class(TMVCController)
   private
     [Inject]

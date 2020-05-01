@@ -15,9 +15,9 @@ type
     function FindGameByPassword(const Password: string): IGameData;
     function getGames: cwCollections.IList<datamodel.IGameData>;
     function getUsersByGameIDOrUserID(const Key: string): cwCollections.IList<datamodel.IUserData>;
+    function getUsers(const AuthToken: string): cwCollections.IList<datamodel.IUserData>;
   public
     constructor Create; reintroduce;
-
   end;
 
 implementation
@@ -48,8 +48,7 @@ begin
 
 end;
 
-function TAureliusDataModel.FindGameByPassword(
-  const Password: string): IGameData;
+function TAureliusDataModel.FindGameByPassword(const Password: string): IGameData;
 begin
 
 end;
@@ -59,8 +58,12 @@ begin
 
 end;
 
-function TAureliusDataModel.getUsersByGameIDOrUserID(
-  const Key: string): cwCollections.IList<datamodel.IUserData>;
+function TAureliusDataModel.getUsers(const AuthToken: string): cwCollections.IList<datamodel.IUserData>;
+begin
+
+end;
+
+function TAureliusDataModel.getUsersByGameIDOrUserID(const Key: string): cwCollections.IList<datamodel.IUserData>;
 begin
 
 end;

@@ -1,13 +1,30 @@
 object AppMetaData: TAppMetaData
+  PrjName = 'ApocalypticCards'
+  PrjAuthor = 'ApocalypticCards Team'
   VersionControlPath = '%projectdir%\versions'
+  UserOptions.Strings = (
+    'fmGenerateScript_Tables=1'
+    'fmGenerateScript_Indexes=1'
+    'fmGenerateScript_Triggers=1'
+    'fmGenerateScript_Relationships=1'
+    'fmGenerateScript_Domains=1'
+    'fmGenerateScript_Procedures=1'
+    'fmGenerateScript_Views=1')
   VersionControl = <
     item
       VersionID = 1
       DateTime = 43940.702870428240000000
+      CloseDate = 43947.439138009260000000
+      FileName = 'database.model.1'
+      Information = 'First Version'
+    end
+    item
+      VersionID = 2
+      DateTime = 43947.439234027780000000
     end>
   DataDictionary.DatabaseTypeID = 'mssql2016'
-  DataDictionary.NextTableID = 4
-  DataDictionary.NextFieldID = 15
+  DataDictionary.NextTableID = 7
+  DataDictionary.NextFieldID = 22
   DataDictionary.NextConstraintID = 1
   DataDictionary.NextIndexID = 1
   DataDictionary.NextRelationshipID = 2
@@ -65,6 +82,7 @@ object AppMetaData: TAppMetaData
           DataTypeName = 'VarChar'
           Size = 45
           Size2 = 0
+          DefaultValue = '('#39#39')'
           Required = True
           FID = 4
           DefaultValueSpecific = False
@@ -135,13 +153,13 @@ object AppMetaData: TAppMetaData
           DataTypeName = 'Datetime'
           Size = 0
           Size2 = 0
-          DefaultValue = '(getutcdate())'
+          DefaultValue = 'getutcdate()'
           Required = True
           FID = 9
           DefaultValueSpecific = False
           RequiredSpecific = False
           ConstraintExprSpecific = False
-          ConstraintDefaultName = 'DF_MyTable_CreateDate_GETDATE'
+          ConstraintDefaultName = 'DF_tbl_games_CreateDate_GETDATE'
           SeedValue = 0
           IncrementValue = 1
           GeneratedByRelationship = False
@@ -189,6 +207,22 @@ object AppMetaData: TAppMetaData
           DefaultValueSpecific = False
           RequiredSpecific = False
           ConstraintExprSpecific = False
+          SeedValue = 0
+          IncrementValue = 1
+          GeneratedByRelationship = False
+        end
+        item
+          FieldName = 'LastUpdate'
+          DataTypeName = 'Datetime'
+          Size = 0
+          Size2 = 0
+          DefaultValue = 'GETUTCDATE()'
+          Required = True
+          FID = 17
+          DefaultValueSpecific = False
+          RequiredSpecific = False
+          ConstraintExprSpecific = False
+          ConstraintDefaultName = 'DK_tbl_questions_Last_Updated'
           SeedValue = 0
           IncrementValue = 1
           GeneratedByRelationship = False
@@ -253,11 +287,120 @@ object AppMetaData: TAppMetaData
           SeedValue = 0
           IncrementValue = 1
           GeneratedByRelationship = False
+        end
+        item
+          FieldName = 'Deleted'
+          DataTypeName = 'Bit'
+          Size = 0
+          Size2 = 0
+          DefaultValue = '0'
+          Required = False
+          FID = 15
+          DefaultValueSpecific = False
+          RequiredSpecific = False
+          ConstraintExprSpecific = False
+          ConstraintDefaultName = 'DF_tbl_Users_Deleted_User'
+          SeedValue = 0
+          IncrementValue = 1
+          GeneratedByRelationship = False
+        end
+        item
+          FieldName = 'LastUpdate'
+          DataTypeName = 'Datetime'
+          Size = 0
+          Size2 = 0
+          DefaultValue = 'GETUTCDATE()'
+          Required = True
+          FID = 16
+          DefaultValueSpecific = False
+          RequiredSpecific = False
+          ConstraintExprSpecific = False
+          ConstraintDefaultName = 'DK_tbl_users_Last_Update'
+          SeedValue = 0
+          IncrementValue = 1
+          GeneratedByRelationship = False
         end>
       Indexes = <>
       Constraints = <>
       Triggers = <>
       PrimaryKeyIndex.IndexName = 'PK__tbl_user__5E028272B5BD7536'
+      PrimaryKeyIndex.IndexType = itNone
+      PrimaryKeyIndex.IndexOrder = ioAscending
+      PrimaryKeyIndex.IID = 0
+      PrimaryKeyIndex.IFields = <
+        item
+          FieldIndex = 0
+          FieldOrder = ioAsc
+          KeyByRelationship = False
+        end>
+    end
+    item
+      TableName = 'tbl_answers'
+      TID = 6
+      OidIndex = 0
+      Fields = <
+        item
+          FieldName = 'PKID'
+          DataTypeName = 'VarChar'
+          Size = 40
+          Size2 = 0
+          Required = True
+          FID = 18
+          DefaultValueSpecific = False
+          RequiredSpecific = False
+          ConstraintExprSpecific = False
+          SeedValue = 0
+          IncrementValue = 1
+          GeneratedByRelationship = False
+        end
+        item
+          FieldName = 'str_type'
+          DataTypeName = 'VarChar'
+          Size = 12
+          Size2 = 0
+          Required = True
+          FID = 19
+          DefaultValueSpecific = False
+          RequiredSpecific = False
+          ConstraintExprSpecific = False
+          SeedValue = 0
+          IncrementValue = 1
+          GeneratedByRelationship = False
+        end
+        item
+          FieldName = 'str_answer'
+          DataTypeName = 'VarChar'
+          Size = 200
+          Size2 = 0
+          Required = True
+          FID = 20
+          DefaultValueSpecific = False
+          RequiredSpecific = False
+          ConstraintExprSpecific = False
+          SeedValue = 0
+          IncrementValue = 1
+          GeneratedByRelationship = False
+        end
+        item
+          FieldName = 'LastUpdate'
+          DataTypeName = 'Datetime'
+          Size = 0
+          Size2 = 0
+          DefaultValue = 'GETUTCDATE()'
+          Required = False
+          FID = 21
+          DefaultValueSpecific = False
+          RequiredSpecific = False
+          ConstraintExprSpecific = False
+          ConstraintDefaultName = 'DK_tbl_Answers_Last_Update'
+          SeedValue = 0
+          IncrementValue = 1
+          GeneratedByRelationship = False
+        end>
+      Indexes = <>
+      Constraints = <>
+      Triggers = <>
+      PrimaryKeyIndex.IndexName = 'PrimaryKey1'
       PrimaryKeyIndex.IndexType = itNone
       PrimaryKeyIndex.IndexOrder = ioAscending
       PrimaryKeyIndex.IID = 0
@@ -291,7 +434,16 @@ object AppMetaData: TAppMetaData
     end
     item
       CategoryType = ctView
-      Objects = <>
+      Objects = <
+        item
+          ObjectName = 'vx_LiveGames'
+          CreateImplementation = 
+            'CREATE VIEW <%ObjectName%> AS'#13#10'    ( '#13#10'        SELECT '#13#10'        ' +
+            '    PKID, '#13#10'            MinUser,'#13#10'            (SELECT count(*) F' +
+            'ROM tbl_users u WHERE u.FKGameID=g.pkid and u.Deleted<>1) userco' +
+            'unt '#13#10'        FROM '#13#10'            tbl_games g '#13#10'        WHERE '#13#10' ' +
+            '           g.CurrentUser IS NOT NULL '#13#10'    );'
+        end>
     end>
   DiagramObj.Diagrams = <
     item
@@ -337,7 +489,85 @@ object AppMetaData: TAppMetaData
         'e'#13#10'  BorderStyle = bsNone'#13#10'  Color = clWhite'#13#10'  ParentColor = Fa' +
         'lse'#13#10'  DisplayRelationshipNames = False'#13#10'  LinkRelationshipsToFi' +
         'elds = False'#13#10'  ShowCaptions = False'#13#10'  StraightRelationshipLine' +
-        's = True'#13#10'  ExplicitWidth = 692'#13#10'  ExplicitHeight = 522'#13#10'end'#13#10
+        's = True'#13#10'  ExplicitWidth = 692'#13#10'  ExplicitHeight = 522'#13#10'  objec' +
+        't TableDiagramBlock1: TTableDiagramBlock'#13#10'    Left = 12.00000000' +
+        '0000000000'#13#10'    Top = 46.000000000000000000'#13#10'    Width = 99.0000' +
+        '00000000000000'#13#10'    Height = 186.000000000000000000'#13#10'    CornerR' +
+        'adius = 25.000000000000000000'#13#10'    Collapsed = False'#13#10'    TID = ' +
+        '1'#13#10'  end'#13#10'  object TableDiagramBlock2: TTableDiagramBlock'#13#10'    L' +
+        'eft = 223.000000000000000000'#13#10'    Top = 66.000000000000000000'#13#10' ' +
+        '   Width = 89.000000000000000000'#13#10'    Height = 114.0000000000000' +
+        '00000'#13#10'    CornerRadius = 25.000000000000000000'#13#10'    Collapsed =' +
+        ' False'#13#10'    TID = 3'#13#10'  end'#13#10'  object RelationshipDiagramLine1: T' +
+        'RelationshipDiagramLine'#13#10'    Pen.Style = psDot'#13#10'    SourceArrow.' +
+        'Shape = asNone'#13#10'    SourceArrow.Width = 10'#13#10'    SourceArrow.Heig' +
+        'ht = 10'#13#10'    SourceArrow.Brush.Color = clBlack'#13#10'    TargetArrow.' +
+        'Shape = asNone'#13#10'    TargetArrow.Width = 10'#13#10'    TargetArrow.Heig' +
+        'ht = 10'#13#10'    TargetArrow.Brush.Color = clBlack'#13#10'    Cursor = crD' +
+        'efault'#13#10'    TextCells = <'#13#10'      item'#13#10'        DControlAngle = T' +
+        'rue'#13#10'        Left = 19.000000000000000000'#13#10'        Top = 131.000' +
+        '000000000000000'#13#10'        Width = 300.000000000000000000'#13#10'       ' +
+        ' Height = 100.000000000000000000'#13#10'        Clip = False'#13#10'        ' +
+        'WordWrap = True'#13#10'        DControlFont = True'#13#10'        Alignment ' +
+        '= taCenter'#13#10'        VertAlign = vaTop'#13#10'        RotateFont = True' +
+        #13#10'        CellFrame.Color = clWhite'#13#10'        CellFrame.Pen.Style' +
+        ' = psClear'#13#10'        CellFrame.Transparent = False'#13#10'        CellF' +
+        'rame.AutoFrame = True'#13#10'        CellFrame.AutoFrameMargin = 0'#13#10'  ' +
+        '      CellFrame.Visible = True'#13#10'        Visible = True'#13#10'        ' +
+        'ReadOnly = False'#13#10'        Transparency = 0'#13#10'      end'#13#10'      ite' +
+        'm'#13#10'        DControlAngle = True'#13#10'        Left = -212.51089088923' +
+        '6500000'#13#10'        Top = 136.905707470864300000'#13#10'        Width = 4' +
+        '00.000000000000000000'#13#10'        Height = 100.000000000000000000'#13#10 +
+        '        Clip = False'#13#10'        WordWrap = True'#13#10'        DControlF' +
+        'ont = True'#13#10'        Alignment = taRightJustify'#13#10'        VertAlig' +
+        'n = vaTop'#13#10'        RotateFont = True'#13#10'        CellFrame.Color = ' +
+        'clWhite'#13#10'        CellFrame.Transparent = True'#13#10'        CellFrame' +
+        '.AutoFrame = False'#13#10'        CellFrame.AutoFrameMargin = 0'#13#10'     ' +
+        '   CellFrame.Visible = False'#13#10'        Visible = True'#13#10'        Re' +
+        'adOnly = False'#13#10'        Transparency = 0'#13#10'      end'#13#10'      item'#13 +
+        #10'        DControlAngle = True'#13#10'        Left = 150.63110051023340' +
+        '0000'#13#10'        Top = 144.665288228870700000'#13#10'        Width = 400.' +
+        '000000000000000000'#13#10'        Height = 100.000000000000000000'#13#10'   ' +
+        '     Clip = False'#13#10'        WordWrap = True'#13#10'        DControlFont' +
+        ' = True'#13#10'        Alignment = taLeftJustify'#13#10'        VertAlign = ' +
+        'vaTop'#13#10'        RotateFont = True'#13#10'        CellFrame.Color = clWh' +
+        'ite'#13#10'        CellFrame.Transparent = True'#13#10'        CellFrame.Aut' +
+        'oFrame = False'#13#10'        CellFrame.AutoFrameMargin = 0'#13#10'        C' +
+        'ellFrame.Visible = False'#13#10'        Visible = True'#13#10'        ReadOn' +
+        'ly = False'#13#10'        Transparency = 0'#13#10'      end'#13#10'      item'#13#10'   ' +
+        '     DControlAngle = True'#13#10'        Left = -216.63110051023340000' +
+        '0'#13#10'        Top = 17.334711771129350000'#13#10'        Width = 400.0000' +
+        '00000000000000'#13#10'        Height = 100.000000000000000000'#13#10'       ' +
+        ' Clip = False'#13#10'        WordWrap = True'#13#10'        DControlFont = T' +
+        'rue'#13#10'        Alignment = taRightJustify'#13#10'        VertAlign = vaB' +
+        'ottom'#13#10'        RotateFont = True'#13#10'        CellFrame.Color = clWh' +
+        'ite'#13#10'        CellFrame.Transparent = True'#13#10'        CellFrame.Aut' +
+        'oFrame = False'#13#10'        CellFrame.AutoFrameMargin = 0'#13#10'        C' +
+        'ellFrame.Visible = False'#13#10'        Visible = True'#13#10'        ReadOn' +
+        'ly = False'#13#10'        Transparency = 0'#13#10'      end'#13#10'      item'#13#10'   ' +
+        '     DControlAngle = True'#13#10'        Left = 146.510890889236500000' +
+        #13#10'        Top = 25.094292529135670000'#13#10'        Width = 400.00000' +
+        '0000000000000'#13#10'        Height = 100.000000000000000000'#13#10'        ' +
+        'Clip = False'#13#10'        WordWrap = True'#13#10'        DControlFont = Tr' +
+        'ue'#13#10'        Alignment = taLeftJustify'#13#10'        VertAlign = vaBot' +
+        'tom'#13#10'        RotateFont = True'#13#10'        CellFrame.Color = clWhit' +
+        'e'#13#10'        CellFrame.Transparent = True'#13#10'        CellFrame.AutoF' +
+        'rame = False'#13#10'        CellFrame.AutoFrameMargin = 0'#13#10'        Cel' +
+        'lFrame.Visible = False'#13#10'        Visible = True'#13#10'        ReadOnly' +
+        ' = False'#13#10'        Transparency = 0'#13#10'      end>'#13#10'    Visible = Tr' +
+        'ue'#13#10'    Layer = 0'#13#10'    Transparency = 0'#13#10'    LineStyle = lsLine'#13 +
+        #10'    Color = clBlack'#13#10'    Collapsed = False'#13#10'    Handles = <'#13#10'  ' +
+        '    item'#13#10'        OrX = 205.000000000000000000'#13#10'        OrY = 12' +
+        '3.000000000000000000'#13#10'        Style = hsSize'#13#10'      end'#13#10'      i' +
+        'tem'#13#10'        OrX = 129.000000000000000000'#13#10'        OrY = 139.000' +
+        '000000000000000'#13#10'        Style = hsSize'#13#10'      end>'#13#10'    LinkPoi' +
+        'nts = <'#13#10'      item'#13#10'        Anchor = TableDiagramBlock2'#13#10'      ' +
+        '  AnchorIndex = 0'#13#10'        Collapsable = False'#13#10'        Collapse' +
+        'd = False'#13#10'        LinkConstraint = lcAll'#13#10'        Visible = Tru' +
+        'e'#13#10'      end'#13#10'      item'#13#10'        Anchor = TableDiagramBlock1'#13#10' ' +
+        '       AnchorIndex = 0'#13#10'        Collapsable = False'#13#10'        Col' +
+        'lapsed = False'#13#10'        LinkConstraint = lcAll'#13#10'        Visible ' +
+        '= True'#13#10'      end>'#13#10'    RelID = 1'#13#10'  end'#13#10'end'#13#10
     end>
   AureliusExportOptions = 
     '<Mappings RegisterEntities="true" NoNullable="true" DefaultAssoc' +
@@ -362,5 +592,8 @@ object AppMetaData: TAppMetaData
     'Source="caption" Format="T%s"/>'#13#10'  <FieldNaming Source="caption"' +
     ' Format="%s"/>'#13#10'  <AssociationNaming Source="ChildFieldCaption" ' +
     'Format="%s"/>'#13#10'  <ManyValuedNaming Source="ChildTableCaption" Fo' +
-    'rmat="%sList"/>'#13#10'  <Tables/>'#13#10'  <Associations/>'#13#10'</Mappings>'#13#10
+    'rmat="%sList"/>'#13#10'  <Tables>'#13#10'    <Table TableId="1">'#13#10'      <Fie' +
+    'lds>'#13#10'        <Field FieldId="4" PropertyName="sessionPassword"/' +
+    '>'#13#10'      </Fields>'#13#10'    </Table>'#13#10'  </Tables>'#13#10'  <Associations/>' +
+    #13#10'</Mappings>'#13#10
 end

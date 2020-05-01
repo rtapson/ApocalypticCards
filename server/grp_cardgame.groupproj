@@ -9,7 +9,14 @@
         <Projects Include="src\mod_cardgame.dproj">
             <Dependencies/>
         </Projects>
+<<<<<<< Updated upstream
         <Projects Include="..\vclTestClient\vclTestClient.dproj">
+=======
+        <Projects Include="..\dmvcserver\dmvcserver.dproj">
+>>>>>>> Stashed changes
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\dmvcserver\dmvcserver.dproj">
             <Dependencies/>
         </Projects>
         <Projects Include="..\fmxclient\FMXClientProject.dproj">
@@ -41,6 +48,7 @@
     <Target Name="mod_cardgame:Make">
         <MSBuild Projects="src\mod_cardgame.dproj" Targets="Make"/>
     </Target>
+<<<<<<< Updated upstream
     <Target Name="vclTestClient">
         <MSBuild Projects="..\vclTestClient\vclTestClient.dproj"/>
     </Target>
@@ -49,6 +57,15 @@
     </Target>
     <Target Name="vclTestClient:Make">
         <MSBuild Projects="..\vclTestClient\vclTestClient.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="dmvcserver">
+        <MSBuild Projects="..\dmvcserver\dmvcserver.dproj"/>
+    </Target>
+    <Target Name="dmvcserver:Clean">
+        <MSBuild Projects="..\dmvcserver\dmvcserver.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="dmvcserver:Make">
+        <MSBuild Projects="..\dmvcserver\dmvcserver.dproj" Targets="Make"/>
     </Target>
     <Target Name="FMXClientProject">
         <MSBuild Projects="..\fmxclient\FMXClientProject.dproj"/>
@@ -60,13 +77,36 @@
         <MSBuild Projects="..\fmxclient\FMXClientProject.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="CardDebug;mod_cardgame;vclTestClient;FMXClientProject"/>
+        <CallTarget Targets="CardDebug;mod_cardgame;vclTestClient;dmvcserver;FMXClientProject"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="CardDebug:Clean;mod_cardgame:Clean;vclTestClient:Clean;FMXClientProject:Clean"/>
+        <CallTarget Targets="CardDebug:Clean;mod_cardgame:Clean;vclTestClient:Clean;dmvcserver:Clean;FMXClientProject:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="CardDebug:Make;mod_cardgame:Make;vclTestClient:Make;FMXClientProject:Make"/>
+<<<<<<< Updated upstream
+        <CallTarget Targets="CardDebug:Make;mod_cardgame:Make;vclTestClient:Make"/>
+=======
+    <Target Name="dmvcserver">
+        <MSBuild Projects="..\dmvcserver\dmvcserver.dproj"/>
+    </Target>
+    <Target Name="dmvcserver:Clean">
+        <MSBuild Projects="..\dmvcserver\dmvcserver.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="dmvcserver:Make">
+        <MSBuild Projects="..\dmvcserver\dmvcserver.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="CardDebug;mod_cardgame;dmvcserver"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="CardDebug:Clean;mod_cardgame:Clean;dmvcserver:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="CardDebug:Make;mod_cardgame:Make;dmvcserver:Make"/>
+>>>>>>> Stashed changes
+=======
+        <CallTarget Targets="CardDebug:Make;mod_cardgame:Make;vclTestClient:Make;dmvcserver:Make;FMXClientProject:Make"/>
+>>>>>>> Stashed changes
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

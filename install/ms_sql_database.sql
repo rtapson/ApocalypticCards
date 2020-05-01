@@ -3,33 +3,44 @@ DROP TABLE IF EXISTS tbl_games;
 DROP TABLE IF EXISTS tbl_questions;
 GO 
 
-CREATE TABLE  tbl_games (
-  PKID VARCHAR(40) NOT NULL,
-  Running bit NOT NULL,
-  SessionName varchar(45) NOT NULL,
-  SessionPW varchar(45) NOT NULL,
-  LangID varchar(2) NOT NULL,
-  MinUser int NOT NULL,
-  MaxUser int NOT NULL,
-  CurrentUser VARCHAR(40),
-  LastUpdate datetime NOT NULL CONSTRAINT DF_MyTable_CreateDate_GETDATE DEFAULT GETUTCDATE(),
-  PRIMARY KEY (PKID)
-);
+CREATE TABLE [tbl_users] (
+  [PKID] VARCHAR(40) NOT NULL,
+  [FKGameID] VARCHAR(40) NOT NULL,
+  [Name] VARCHAR(255) NULL,
+  [Deleted] BIT NULL
+    CONSTRAINT [DF_tbl_Users_Deleted_User] DEFAULT 0,
+  [LastUpdate] DATETIME NOT NULL
+    CONSTRAINT [DK_tbl_users_Last_Update] DEFAULT GETUTCDATE(),
+  CONSTRAINT [PK__tbl_user__5E028272B5BD7536] PRIMARY KEY ([PKID])
+)
+GO
 
+CREATE TABLE [tbl_questions] (
+  [str_pkid] VARCHAR(40) NOT NULL,
+  [str_question] TEXT NOT NULL,
+  [LastUpdate] DATETIME NOT NULL
+    CONSTRAINT [DK_tbl_questions_Last_Updated] DEFAULT GETUTCDATE(),
+  CONSTRAINT [PK__tbl_ques__2ED30809B44DD4BE] PRIMARY KEY ([str_pkid])
+)
+GO
 
-CREATE TABLE tbl_users (
-  PKID VARCHAR(40) NOT NULL,
-  FKGameID VARCHAR(40) NOT NULL,
-  Name VARCHAR(255) NULL,
-  PRIMARY KEY (PKID),
-  CONSTRAINT keyGames
-    FOREIGN KEY (FKGameID)
-    REFERENCES tbl_games (PKID)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION);
+CREATE TABLE [tbl_games] (
+  [PKID] VARCHAR(40) NOT NULL,
+  [Running] BIT NOT NULL,
+  [SessionName] VARCHAR(45) NOT NULL,
+  [SessionPW] VARCHAR(45) NOT NULL,
+  [LangID] VARCHAR(2) NOT NULL,
+  [MinUser] INTEGER NOT NULL,
+  [MaxUser] INTEGER NOT NULL,
+  [CurrentUser] VARCHAR(40) NULL,
+  [LastUpdate] DATETIME NOT NULL
+    CONSTRAINT [DF_tbl_games_CreateDate_GETDATE] DEFAULT getutcdate(),
+  CONSTRAINT [PK__tbl_game__5E028272CD8221C8] PRIMARY KEY ([PKID])
+)
+GO
 
-CREATE TABLE tbl_questions (
-  str_pkid VARCHAR(40) NOT NULL,
-  str_question TEXT NOT NULL,
-  PRIMARY KEY (str_pkid)
-);
+ALTER TABLE [tbl_users] ADD CONSTRAINT [keyGames]
+  FOREIGN KEY ([FKGameID])
+  REFERENCES [tbl_games] ([PKID])
+  ON DELETE CASCADE
+GO

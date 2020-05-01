@@ -8,7 +8,16 @@ uses
   Spring.Container.Common;
 
 type
-  [MVCPath('/')]
+  TUserInsertData = class
+  private
+    FName: string;
+    FFKGameID: string;
+  public
+    property Name: string read FName write FName;
+    property FKGameID: string read FFKGameID write FFKGameID;
+  end;
+
+  [MVCPath('/api')]
   TUserController = class(TMVCController) 
   private
     [Inject]
@@ -42,6 +51,7 @@ implementation
 uses
   System.SysUtils,
   MVCFramework.Logger,
+  MVCFramework.Serializer.Commons,
   System.StrUtils,
   apcardscontext,
   datamodel.gamedata.standard,
@@ -55,23 +65,55 @@ end;
 
 procedure TUserController.GetUser(id: string);
 begin
-  //todo: render the customer by id
+  Render(FDBSession.objectManager.Find<Ttbl_users>(Format('{%s}', [id])), False);
 end;
 
 procedure TUserController.CreateUser;
-
+var
+  UserInsertData: TUserInsertData;
+  UserData: Ttbl_users;
 begin
-  //todo: create a new customer
+  UserInsertData := FContext.Request.BodyAs<TUserInsertData>;
+  UserData := Ttbl_users.Create;
+  UserData.Name := UserInsertData.Name;
+  UserData.FKGameID := FDBSession.objectManager.Find<Ttbl_games>(UserInsertData.FKGameID);
+  FDBSession.objectManager.SaveOrUpdate(UserData);
+
+//  Render(ObjectDict(False).Add('data', UserData,
+
+  Render(UserData, False, stProperties,
+    procedure(const User: TObject; const Links: IMVCLinks)
+    begin
+      Links
+       .AddRefLink
+       .Add(HATEOAS.HREF, '/users/' + Ttbl_users(User).PKID)
+       .Add(HATEOAS.REL, 'self')
+       .Add(HATEOAS._TYPE, 'application/json')
+       .Add('title', 'Details for ' + Ttbl_users(User).Name);
+      Links
+       .AddRefLink
+       .Add(HATEOAS.HREF, '/users')
+       .Add(HATEOAS.REL, 'users')
+       .Add(HATEOAS._TYPE, 'application/json');
+    end);
 end;
 
 procedure TUserController.UpdateUser(id: string);
+var
+  UserData: Ttbl_users;
 begin
-  //todo: update customer by id
+  UserData := FContext.Request.BodyAs<Ttbl_users>;
+  UserData.PKID := id;
+  FDBSession.objectManager.SaveOrUpdate(UserData);
+  Render(UserData, False);
 end;
 
 procedure TUserController.DeleteUser(id: string);
+var
+  UserData: Ttbl_users;
 begin
-  //todo: delete customer by id
+  UserData := FDBSession.objectManager.Find<Ttbl_users>(id);
+  FdbSession.objectManager.Remove(UserData);
 end;
 
 

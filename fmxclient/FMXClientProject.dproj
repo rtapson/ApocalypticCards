@@ -107,11 +107,7 @@
         <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
         <Icns_MainIcns>$(BDS)\bin\delphi_PROJECTICNS.icns</Icns_MainIcns>
         <SanitizedProjectName>FMXClientProject</SanitizedProjectName>
-<<<<<<< HEAD
-        <DCC_UnitSearchPath>C:\Code\ApocalypticCards\dependencies\cwRuntime\src\main\api;C:\Code\ApocalypticCards\server\src\units\implementation;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
-=======
         <DCC_UnitSearchPath>..\dependencies\cwRuntime\src;..\dependencies\cwRuntime\src\main\api;..\dependencies\cwRuntime\src\main\implementation;..\server\src\units\api;..\server\src\units\implementation;..\dependencies\TFrameStand\source;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
->>>>>>> master
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Android)'!=''">
         <DCC_UsePackage>DBXSqliteDriver;RESTComponents;DBXInterBaseDriver;emsclientfiredac;tethering;DataSnapFireDAC;bindcompfmx;fmx;FireDACIBDriver;FireDACDBXDriver;dbexpress;IndyCore;dsnap;emsclient;DataSnapCommon;FireDACCommon;FrameStandPackage_10_3;RESTBackendComponents;soapserver;bindengine;CloudService;FireDACCommonDriver;DataSnapClient;inet;bindcompdbx;IndyIPCommon;IndyIPServer;IndySystem;fmxFireDAC;FireDAC;FireDACSqliteDriver;soaprtl;DbxCommonDriver;xmlrtl;soapmidas;DataSnapNativeClient;FireDACDSDriver;rtl;DbxClientDriver;CustomIPTransport;bindcomp;IndyIPClient;dbxcds;dsnapxml;DataSnapProviderClient;dbrtl;IndyProtocols;$(DCC_UsePackage)</DCC_UsePackage>
@@ -358,10 +354,6 @@
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <DCC_DcuOutput>.\out\lib\$(Platform)\$(Config)</DCC_DcuOutput>
-<<<<<<< HEAD
-        <DCC_UnitSearchPath>C:\Sviluppo\Progetti\ApocalypticCards\dependencies\cwRuntime\src;C:\Sviluppo\Progetti\ApocalypticCards\dependencies\cwRuntime\src\main\api;C:\Sviluppo\Progetti\ApocalypticCards\dependencies\cwRuntime\src\main\implementation;C:\Sviluppo\Progetti\ApocalypticCards\server\src\units\api;C:\Sviluppo\Progetti\ApocalypticCards\server\src\units\implementation;C:\Code\ApocalypticCards\server\src\units\api;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
-=======
->>>>>>> master
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>

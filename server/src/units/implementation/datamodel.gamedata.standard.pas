@@ -36,6 +36,14 @@ type
     procedure setPassword( const value: string );
     procedure setUserCount( const value: integer );
   public
+    property SessionPassword: string  read getPassword    write setPassword;
+    property SessionID: string        read getSessionID   write setSessionID;
+    property SessionName: string      read getSessionName write setSessionName;
+    property LangID: string           read getLangID      write setLangID;
+    property MinUser: integer         read getMinUser     write setMinUser;
+    property MaxUser: integer         read getMaxUser     write setMaxUser;
+    property Running: boolean         read getRunning     write setRunning;
+    property UserCount: integer       read getUserCount   write setUserCount;
   end;
 
 implementation

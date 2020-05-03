@@ -11,13 +11,19 @@ type
   TUserInsertData = class
   private
     FName: string;
-    FFKGameID: string;
+    FDeleted: boolean;
+    FUserID: string;
+    FIsCurrentUser: boolean;
+    FGameID: string;
   public
-    property Name: string read FName write FName;
-    property FKGameID: string read FFKGameID write FFKGameID;
+    property Deleted: boolean       read FDeleted       write FDeleted;
+    property IsCurrentUser: boolean read FIsCurrentUser write FIsCurrentUser;
+    property UserID: string         read FUserID        write FUserID;
+    property Name: string           read FName          write FName;
+    property GameID: string         read FGameID        write FGameID; //<- Which game am I joined to?
   end;
 
-  [MVCPath('/api')]
+  [MVCPath('/')]
   TUserController = class(TMVCController) 
   private
     [Inject]
@@ -30,7 +36,7 @@ type
 
     [MVCPath('/users/($id)')]
     [MVCHTTPMethod([httpGET])]
-    procedure GetUser(id: string);
+    procedure GetUser(const id: string);
 
     [MVCPath('/users')]
     [MVCHTTPMethod([httpPOST])]
@@ -38,11 +44,11 @@ type
 
     [MVCPath('/users/($id)')]
     [MVCHTTPMethod([httpPUT])]
-    procedure UpdateUser(id: string);
+    procedure UpdateUser(const id: string);
 
     [MVCPath('/users/($id)')]
     [MVCHTTPMethod([httpDELETE])]
-    procedure DeleteUser(id: string);
+    procedure DeleteUser(const id: string);
 
   end;
 
@@ -53,9 +59,10 @@ uses
   MVCFramework.Logger,
   MVCFramework.Serializer.Commons,
   System.StrUtils,
-  apcardscontext,
-  datamodel.gamedata.standard,
-  datamodel;
+  datamodel.userdata.standard,
+  datamodel,
+  REST.Json,
+  apcardscontext;
 
 //Sample CRUD Actions for a "Customer" entity
 procedure TUserController.GetUsers;
@@ -63,42 +70,48 @@ begin
   Render<Ttbl_users>(FDBSession.objectManager.Find<Ttbl_users>().List);
 end;
 
-procedure TUserController.GetUser(id: string);
+procedure TUserController.GetUser(const id: string);
 begin
   Render(FDBSession.objectManager.Find<Ttbl_users>(Format('{%s}', [id])), False);
 end;
 
 procedure TUserController.CreateUser;
 var
-  UserInsertData: TUserInsertData;
   UserData: Ttbl_users;
+  NewPlayer: IUserData;
 begin
-  UserInsertData := FContext.Request.BodyAs<TUserInsertData>;
+//  NewPlayer := FContext.Request.BodyAs<TUserData>;
+  NewPlayer := TJSON.JsonToObject<TUserData>(FContext.Request.Body);
+
   UserData := Ttbl_users.Create;
-  UserData.Name := UserInsertData.Name;
-  UserData.FKGameID := FDBSession.objectManager.Find<Ttbl_games>(UserInsertData.FKGameID);
+  UserData.Name := NewPlayer.Name;
+  UserData.FKGameID := FDBSession.objectManager.Find<Ttbl_games>(NewPlayer.GameID);
+  if not Assigned(UserData.FKGameID) then
+      Exception.Create('Requested game not found.');
+
   FDBSession.objectManager.SaveOrUpdate(UserData);
 
 //  Render(ObjectDict(False).Add('data', UserData,
-
-  Render(UserData, False, stProperties,
-    procedure(const User: TObject; const Links: IMVCLinks)
-    begin
-      Links
-       .AddRefLink
-       .Add(HATEOAS.HREF, '/users/' + Ttbl_users(User).PKID)
-       .Add(HATEOAS.REL, 'self')
-       .Add(HATEOAS._TYPE, 'application/json')
-       .Add('title', 'Details for ' + Ttbl_users(User).Name);
-      Links
-       .AddRefLink
-       .Add(HATEOAS.HREF, '/users')
-       .Add(HATEOAS.REL, 'users')
-       .Add(HATEOAS._TYPE, 'application/json');
-    end);
+  Render(NewPlayer);
+//  Render(NewPlayer,
+//    False, stProperties,
+//    procedure(const User: TObject; const Links: IMVCLinks)
+//    begin
+//      Links
+//       .AddRefLink
+//       .Add(HATEOAS.HREF, '/users/' + NewPlayer.UserID)
+//       .Add(HATEOAS.REL, 'self')
+//       .Add(HATEOAS._TYPE, 'application/json')
+//       .Add('title', 'Details for ' + NewPlayer.Name);
+//      Links
+//       .AddRefLink
+//       .Add(HATEOAS.HREF, '/users')
+//       .Add(HATEOAS.REL, 'users')
+//       .Add(HATEOAS._TYPE, 'application/json');
+//    end);
 end;
 
-procedure TUserController.UpdateUser(id: string);
+procedure TUserController.UpdateUser(const id: string);
 var
   UserData: Ttbl_users;
 begin
@@ -108,7 +121,7 @@ begin
   Render(UserData, False);
 end;
 
-procedure TUserController.DeleteUser(id: string);
+procedure TUserController.DeleteUser(const id: string);
 var
   UserData: Ttbl_users;
 begin

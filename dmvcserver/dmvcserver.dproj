@@ -154,15 +154,16 @@
             <FormType>dfm</FormType>
             <DesignClass>TWebModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="..\server\src\units\implementation\datamodel.datamodel.aurelius.pas"/>
-        <DCCReference Include="..\server\src\units\api\datamodel.pas"/>
         <DCCReference Include="Entities\apcardscontext.pas"/>
         <DCCReference Include="Database\Database.Session.pas"/>
         <DCCReference Include="Database\Database.Session.Types.pas"/>
         <DCCReference Include="Database\GameDBConnection.pas"/>
+        <DCCReference Include="Controllers\UserController.pas"/>
+        <DCCReference Include="Controllers\ControllerConsts.pas"/>
+        <DCCReference Include="..\server\src\units\api\datamodel.pas"/>
         <DCCReference Include="..\server\src\units\implementation\datamodel.gamedata.standard.pas"/>
         <DCCReference Include="..\server\src\units\implementation\datamodel.gamedataobject.custom.pas"/>
-        <DCCReference Include="Controllers\UserController.pas"/>
+        <DCCReference Include="..\server\src\units\implementation\datamodel.userdata.standard.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

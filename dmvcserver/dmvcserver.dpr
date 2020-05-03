@@ -14,15 +14,16 @@ uses
   IdHTTPWebBrokerBridge,
   GameDataController in 'Controllers\GameDataController.pas',
   wmGameData in 'wmGameData.pas' {GameDataWebModule: TWebModule},
-  datamodel.datamodel.aurelius in '..\server\src\units\implementation\datamodel.datamodel.aurelius.pas',
-  datamodel in '..\server\src\units\api\datamodel.pas',
   apcardscontext in 'Entities\apcardscontext.pas',
   Database.Session in 'Database\Database.Session.pas',
   Database.Session.Types in 'Database\Database.Session.Types.pas',
   GameDBConnection in 'Database\GameDBConnection.pas',
+  UserController in 'Controllers\UserController.pas',
+  ControllerConsts in 'Controllers\ControllerConsts.pas',
+  datamodel in '..\server\src\units\api\datamodel.pas',
   datamodel.gamedata.standard in '..\server\src\units\implementation\datamodel.gamedata.standard.pas',
   datamodel.gamedataobject.custom in '..\server\src\units\implementation\datamodel.gamedataobject.custom.pas',
-  UserController in 'Controllers\UserController.pas';
+  datamodel.userdata.standard in '..\server\src\units\implementation\datamodel.userdata.standard.pas';
 
 {$R *.res}
 

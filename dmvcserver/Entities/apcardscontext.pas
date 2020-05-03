@@ -10,6 +10,7 @@ uses
   Aurelius.Types.DynamicProperties, 
   Aurelius.Types.Nullable, 
   Aurelius.Types.Proxy, 
+  MVCFramework.Serializer.Commons, 
   Aurelius.Criteria.Dictionary;
 
 type
@@ -25,6 +26,7 @@ type
   [Entity]
   [Table('tbl_answers')]
   [Id('FPKID', TIdGenerator.Uuid38)]
+  [MVCNameCase(ncCamelCase)]
   Ttbl_answers = class
   private
     [Column('PKID', [TColumnProp.Required], 40)]
@@ -48,6 +50,7 @@ type
   [Entity]
   [Table('tbl_games')]
   [Id('FPKID', TIdGenerator.Uuid38)]
+  [MVCNameCase(ncCamelCase)]
   Ttbl_games = class
   private
     [Column('PKID', [TColumnProp.Required], 40)]
@@ -59,7 +62,7 @@ type
     [Column('SessionName', [TColumnProp.Required], 45)]
     FSessionName: string;
     
-    [Column('sessionPW', [TColumnProp.Required], 45)]
+    [Column('SessionPW', [TColumnProp.Required], 45)]
     FsessionPassword: string;
     
     [Column('LangID', [TColumnProp.Required], 2)]
@@ -77,6 +80,7 @@ type
     [Column('LastUpdate', [TColumnProp.NoInsert, TColumnProp.NoUpdate])]
     FLastUpdate: TDateTime;
   public
+    [MVCNameAs('sessionId')]
     property PKID: string read FPKID write FPKID;
     property Running: Boolean read FRunning write FRunning;
     property SessionName: string read FSessionName write FSessionName;
@@ -91,6 +95,7 @@ type
   [Entity]
   [Table('tbl_questions')]
   [Id('Fstr_pkid', TIdGenerator.Uuid38)]
+  [MVCNameCase(ncCamelCase)]
   Ttbl_questions = class
   private
     [Column('str_pkid', [TColumnProp.Required], 40)]
@@ -111,6 +116,7 @@ type
   [Entity]
   [Table('tbl_users')]
   [Id('FPKID', TIdGenerator.Uuid38)]
+  [MVCNameCase(ncCamelCase)]
   Ttbl_users = class
   private
     [Column('PKID', [TColumnProp.Required], 40)]

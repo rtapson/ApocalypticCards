@@ -154,7 +154,7 @@ object AppMetaData: TAppMetaData
           Size = 0
           Size2 = 0
           DefaultValue = 'getutcdate()'
-          Required = True
+          Required = False
           FID = 9
           DefaultValueSpecific = False
           RequiredSpecific = False
@@ -217,7 +217,7 @@ object AppMetaData: TAppMetaData
           Size = 0
           Size2 = 0
           DefaultValue = 'GETUTCDATE()'
-          Required = True
+          Required = False
           FID = 17
           DefaultValueSpecific = False
           RequiredSpecific = False
@@ -310,7 +310,7 @@ object AppMetaData: TAppMetaData
           Size = 0
           Size2 = 0
           DefaultValue = 'GETUTCDATE()'
-          Required = True
+          Required = False
           FID = 16
           DefaultValueSpecific = False
           RequiredSpecific = False
@@ -578,22 +578,33 @@ object AppMetaData: TAppMetaData
     'edure OnColumnGenerated(Args: TColumnGeneratedArgs);'#13#10'begin'#13#10'{  ' +
     'if Args.Field.Name = '#39'FPKID'#39' then'#13#10'  begin          '#13#10'    Args.C' +
     'olumnAttr.Arguments.Delete(1);            '#13#10'    Args.ColumnAttr.' +
-    'AddRawArgument('#39'[TIdGenerator.Uuid38]'#39');'#13#10'  end;}    '#13#10#13#10'  if Ar' +
-    'gs.Field.Name = '#39'FLastUpdate'#39' then'#13#10'  begin          '#13#10'    Args.' +
-    'ColumnAttr.Arguments.Delete(1);  '#13#10'    Args.ColumnAttr.AddRawArg' +
-    'ument('#39'[TColumnProp.NoInsert, TColumnProp.NoUpdate]'#39');  '#13#10'  end;' +
-    '    '#13#10'end'#13#10#13#10'procedure OnClassGenerated(Args: TClassGeneratedArg' +
-    's);'#13#10'var'#13#10'  Attr: TCodeAttributeDeclaration;'#13#10'  i: Integer;'#13#10'beg' +
-    'in                      '#13#10'  for I := 0 to Args.CodeType.CustomAt' +
-    'tributes.Count - 1 do'#13#10'  begin'#13#10'    Attr := Args.CodeType.Custom' +
-    'Attributes[i];'#13#10'    if Attr.Name = '#39'Id'#39' then'#13#10'    begin'#13#10'      T' +
-    'CodeSnippetExpression(Attr.Arguments[1].Value).Value := '#39'TIdGene' +
-    'rator.Uuid38'#39';'#13#10'    end;'#13#10'  end;'#13#10'end;</Script>'#13#10'  <TableNaming ' +
-    'Source="caption" Format="T%s"/>'#13#10'  <FieldNaming Source="caption"' +
-    ' Format="%s"/>'#13#10'  <AssociationNaming Source="ChildFieldCaption" ' +
-    'Format="%s"/>'#13#10'  <ManyValuedNaming Source="ChildTableCaption" Fo' +
-    'rmat="%sList"/>'#13#10'  <Tables>'#13#10'    <Table TableId="1">'#13#10'      <Fie' +
-    'lds>'#13#10'        <Field FieldId="4" PropertyName="sessionPassword"/' +
-    '>'#13#10'      </Fields>'#13#10'    </Table>'#13#10'  </Tables>'#13#10'  <Associations/>' +
-    #13#10'</Mappings>'#13#10
+    'AddRawArgument('#39'[TIdGenerator.Uuid38]'#39');'#13#10'  end;}    '#13#10'         ' +
+    '  '#13#10'  if Args.Field.Name = '#39'FLastUpdate'#39' then'#13#10'  begin          ' +
+    #13#10'    Args.ColumnAttr.Arguments.Delete(1);  '#13#10'    Args.ColumnAtt' +
+    'r.AddRawArgument('#39'[TColumnProp.NoInsert, TColumnProp.NoUpdate]'#39')' +
+    ';  '#13#10'  end;'#13#10'end'#13#10#13#10'procedure OnClassGenerated(Args: TClassGener' +
+    'atedArgs);'#13#10'var              '#13#10'  Attr: TCodeAttributeDeclaration' +
+    ';'#13#10'  i: Integer;'#13#10'begin            '#13#10'  Args.CodeType.AddAttribut' +
+    'e('#39'MVCNameCase'#39').AddRawArgument('#39'ncCamelCase'#39');  '#13#10'  for I := 0 ' +
+    'to Args.CodeType.CustomAttributes.Count - 1 do'#13#10'  begin   '#13#10'    ' +
+    'Attr := Args.CodeType.CustomAttributes[i];'#13#10'    if Attr.Name = '#39 +
+    'Id'#39' then'#13#10'    begin'#13#10'      TCodeSnippetExpression(Attr.Arguments' +
+    '[1].Value).Value := '#39'TIdGenerator.Uuid38'#39';'#13#10'    end;'#13#10'  end;    ' +
+    '   '#13#10'                                 '#13#10'  if Args.CodeType.Name ' +
+    '= '#39'Ttbl_games'#39' then  '#13#10'  begin'#13#10'    for i := 0 to Args.CodeType.' +
+    'Members.Count - 1 do'#13#10'    begin        '#13#10'      if Args.CodeType.' +
+    'Members[i].Name = '#39'PKID'#39' then '#13#10'      begin'#13#10'        TCodeMember' +
+    'Property(Args.CodeType.Members[i]).AddAttribute('#39'MVCNameAs'#39').Add' +
+    'RawArgument('#39#39#39'sessionId'#39#39#39');'#13#10'      end;                       ' +
+    '                                      '#13#10'    end;         '#13#10'  end' +
+    ';'#13#10'end;'#13#10#13#10'procedure OnUnitGenerated(Args: TUnitGeneratedArgs);'#13 +
+    #10'begin                               '#13#10'  Args.CodeUnit.Interface' +
+    'Units.Add(TCodeUsedUnit.Create('#39'MVCFramework.Serializer.Commons'#39 +
+    '));'#13#10'end;</Script>'#13#10'  <TableNaming Source="caption" Format="T%s"' +
+    '/>'#13#10'  <FieldNaming Source="caption" Format="%s"/>'#13#10'  <Associatio' +
+    'nNaming Source="ChildFieldCaption" Format="%s"/>'#13#10'  <ManyValuedN' +
+    'aming Source="ChildTableCaption" Format="%sList"/>'#13#10'  <Tables>'#13#10 +
+    '    <Table TableId="1">'#13#10'      <Fields>'#13#10'        <Field FieldId=' +
+    '"4" PropertyName="sessionPassword"/>'#13#10'      </Fields>'#13#10'    </Tab' +
+    'le>'#13#10'  </Tables>'#13#10'  <Associations/>'#13#10'</Mappings>'#13#10
 end

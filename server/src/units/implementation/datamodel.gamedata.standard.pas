@@ -9,13 +9,14 @@ uses
 type
   TGameData = class(  TGameDataObject, IGameData )
   private
+    fCurrentQuestion: string;
     fSessionPassword: string;
     fSessionName: string;
     fLangID: string;
     fMinUser: integer;
     fMaxUser: integer;
     fSessionID: string;
-    fRunning: boolean;
+    fGameState: TGameState;
     fUserCount: integer;
   strict private
     function getUserCount: integer;
@@ -24,17 +25,19 @@ type
     function getLangID: string;
     function getMinUser: integer;
     function getMaxUser: integer;
-    function getRunning: boolean;
+    function getGameState: TGameState;
     function getPassword: string;
+    function getCurrentQuestion: string;
 
     procedure setSessionID( const value: string );
     procedure setSessionName( const value: string );
     procedure setLangID( const value: string );
     procedure setMinUser( const value: integer );
     procedure setMaxUser( const value: integer );
-    procedure setRunning( const value: boolean );
+    procedure setGameState( const value: TGameState );
     procedure setPassword( const value: string );
     procedure setUserCount( const value: integer );
+    procedure setCurrentQuestion( const value: string );
   public
     property SessionPassword: string  read getPassword    write setPassword;
     property SessionID: string        read getSessionID   write setSessionID;
@@ -71,9 +74,14 @@ begin
   Result := fSessionPassword;
 end;
 
-function TGameData.getRunning: boolean;
+function TGameData.getCurrentQuestion: string;
 begin
-  Result := fRunning;
+  Result := fCurrentQuestion;
+end;
+
+function TGameData.getGameState: TGameState;
+begin
+  Result := fGameState;
 end;
 
 function TGameData.getSessionID: string;
@@ -111,9 +119,14 @@ begin
   fSessionPassword := Value;
 end;
 
-procedure TGameData.setRunning(const value: boolean);
+procedure TGameData.setCurrentQuestion(const value: string);
 begin
-  fRunning := Value;
+  fCurrentQuestion := value;
+end;
+
+procedure TGameData.setGameState(const value: TGameState);
+begin
+  fGameState := Value;
 end;
 
 procedure TGameData.setSessionID(const value: string);

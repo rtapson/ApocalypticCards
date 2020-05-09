@@ -27,15 +27,20 @@ type
     fConn: TFDConnection;
     fQry: TFDQuery;
     procedure QueryToGameData(const Qry: TFDQuery; const GameData: IGameData);
-    procedure QueryToUserData(const Qry: TFDQuery; const UserData: IUserData; const IncludeUID: boolean = FALSE);
+    procedure QueryToUserData(const Qry: TFDQuery; const UserData: IUserData);
     function AddFirstUserToGame(const GameID, UserID: string): boolean;
     function IsCurrentUser(const UserID, GameID: string): boolean;
     function getGameIDByUserID(const Key: string): string;
-    function TransitionGameToRunning(const GameData: IGameData): string;
+    function TransitionGameToRunning(const GameData: IGameData; const Users: IList<IUserData>): string;
     function ValidateUserCount( const GameData: IGameData; out UserCount: integer ): boolean;
-    procedure AllocateAnswers( const GameData: IGameData; const Users: array of string; const RequiredAnswers: Integer );
+    procedure AllocateAnswers( const GameData: IGameData; const Users: IList<IUserData>; const RequiredAnswers: Integer );
     procedure AllocateQuestions( const GameData: IGameData; const RequiredQuestions: Integer );
+    procedure getSuggestedAnswers( const GameID: string; const Cards: IList<ICardData> );
+    function getQuestionText(const QuestionID: string): string;
+    procedure getCards(const UserID: string; const Cards: IList<ICardData>);
   strict private
+    procedure UpdateUser(const User: IUserData);
+    procedure UpdateGame(const Game: IGameData);
     procedure CleanUp;
     procedure UpdateUserPing( const UserID: string );
     function getGames: IList<IGameData>;
@@ -45,6 +50,7 @@ type
     procedure CreateUser(const NewUser: IUserData);
     function getUsers(const Key: string): IList<IUserData>;
     function setGameState(AuthToken: string; const GameData: IGameData): string;
+    function getCurrentTurn( AuthToken: string ): ITurnData;
   public
     constructor Create; reintroduce;
   end;
@@ -61,7 +67,7 @@ const
   {$ifdef DEBUG}
   cDatabaseIni = '.\cardgame.ini';
   {$else}
-  cDatabaseIni = '/var/www/apocalypse/https/private/cardgame.ini';
+  cDatabaseIni = '/etc/apocalypsecards/cardgame.ini';
   {$endif}
 
 function TDataModel.AddFirstUserToGame(const GameID: string; const UserID: string): boolean;
@@ -242,7 +248,7 @@ begin
   end;
 end;
 
-procedure TDataModel.QueryToUserData( const Qry: TFDQuery; const UserData: IUserData; const IncludeUID: boolean = FALSE );
+procedure TDataModel.QueryToUserData( const Qry: TFDQuery; const UserData: IUserData);
 begin
   UserData.GameID  := Qry.FieldByName('FKGameID').AsString;
   UserData.Name    := Qry.FieldByName('Name').AsString;
@@ -251,9 +257,6 @@ begin
   UserData.Score   := Qry.FieldByName('Score').AsInteger;
   UserData.PlayerState := TPlayerState(Qry.FieldByName('PlayerState').AsInteger);
   UserData.IsCurrentUser := IsCurrentUser( UserData.UserID, UserData.GameID );
-  if not IncludeUID then begin
-    UserData.UserID := '';
-  end;
 end;
 
 function TDataModel.ValidateUserCount( const GameData: IGameData; out UserCount: integer ): boolean;
@@ -324,12 +327,59 @@ begin
   end;
 end;
 
-procedure TDataModel.AllocateAnswers( const GameData: IGameData; const Users: array of string; const RequiredAnswers: Integer );
+procedure TDataModel.AllocateAnswers( const GameData: IGameData; const Users: IList<IUserData>; const RequiredAnswers: Integer );
+const
+  cSrcSQL = 'SELECT * FROM tbl_answers ORDER BY RAND() LIMIT :RequiredAnswers';
+  cTgtSQL = 'INSERT INTO tbl_gameanswers (PKID, FKGameID, FKPlayerID, FKAnswerID, State) VALUES (:PKID, :FKGameID, :FKPlayerID, :FKAnswerID, :State);';
+var
+  RemainingRequired: Integer;
+  GUID: TGUID;
+  strGUID: string;
+  src: TFDQuery;
+  tgt: TFDQuery;
+  CardIndex: Integer;
+  MaxUserCards: Integer;
 begin
-
+  RemainingRequired := RequiredAnswers;
+  src := TFDQuery.Create(nil);
+  tgt := TFDQuery.Create(nil);
+  try
+    src.Connection := fConn;
+    tgt.Connection := fConn;
+    src.SQL.Text := cSrcSQL;
+    tgt.SQL.Text := cTgtSQL;
+    tgt.ParamByName('FKGameID').AsString := GameData.SessionID;
+    CardIndex := 0;
+    MaxUserCards := (cCardsPerHand * Users.Count);
+    while RemainingRequired>0 do begin
+      src.ParamByName('RequiredAnswers').AsInteger := RemainingRequired;
+      src.Active := True;
+      src.First;
+      while not src.Eof do begin
+        CreateGUID(GUID);
+        strGUID := GUIDToString(GUID);
+        tgt.ParamByName('PKID').AsString := strGUID;
+        tgt.ParamByName('FKAnswerID').AsString := src.FieldByName('PKID').AsString;
+        if (CardIndex<MaxUserCards) then begin
+          tgt.ParamByName('FKPlayerID').AsString := Users[(CardIndex div cCardsPerHand)].UserID;
+          tgt.ParamByName('State').AsInteger := Integer(TGameCardState.csInHand);
+        end else begin
+          tgt.ParamByName('FKPlayerID').AsString := '';
+          tgt.ParamByName('State').AsInteger := Integer(TGameCardState.csOnDeck);
+        end;
+        tgt.ExecSQL;
+        src.Next;
+        dec(RemainingRequired);
+        inc(CardIndex);
+      end;
+    end;
+  finally
+    tgt.DisposeOf;
+    src.DisposeOf;
+  end;
 end;
 
-function TDataModel.TransitionGameToRunning( const GameData: IGameData ): string;
+function TDataModel.TransitionGameToRunning( const GameData: IGameData; const Users: IList<IUserData> ): string;
 var
   UserCount: Integer;
   RequiredQuestions: Integer;
@@ -342,12 +392,26 @@ begin
     end;
     // Allocate initial hands of questions and answers
     RequiredQuestions := (cGameRounds * UserCount);
-    RequiredAnswers := (succ(cGameRounds)*UserCount) + (UserCount * cCardsPerHand);
+    RequiredAnswers := (succ(cGameRounds) * UserCount) + (UserCount * cCardsPerHand);
     AllocateQuestions( GameData, RequiredQuestions );
-  //  AllocateAnswers( GameData, RequiredAnswers );
-    // Assign current question
+    AllocateAnswers( GameData, Users, RequiredAnswers );
     // Set all users that are not current user to psPlayerSubmitting
     // Set the current user to psJudgeWaitingForSubmit
+    Users.ForEach(
+      procedure ( const Item: IUserData )
+      begin
+        Item.Score := 0;
+        if Item.IsCurrentUser then begin
+          Item.PlayerState := psJudgeWaitingForSubmit;
+        end else begin
+          Item.PlayerState := psPlayerSubmitting;
+        end;
+        UpdateUser(Item);
+      end
+    );
+    //- Set game state
+    GameData.GameState := TGameState.gsRunning;
+    UpdateGame(GameData);
   finally
     Result := GameData.ToJSON;
   end;
@@ -381,7 +445,7 @@ begin
           Exception.Create('Cannot transition game to running state.');
       end;
       //- Trigger change to running state.
-      Result := TransitionGameToRunning(ExistingGame);
+      Result := TransitionGameToRunning(ExistingGame,getUsers(AuthToken));
     end;
     gsNextTurn: begin
       raise
@@ -405,6 +469,112 @@ begin
   fQry.SQL.Text := cSQL;
   fQry.ParamByName('PKID').AsString := UserID;
   fQry.ExecSQL;
+end;
+
+procedure TDataModel.UpdateGame(const Game: IGameData);
+const
+  cSQL = 'UPDATE tbl_games SET GameState=:GameState, CurrentQuestion=:CurrentQuestion, LastUpdate=Now() WHERE PKID=:PKID;';
+begin
+  fQry.SQL.Text := cSQL;
+  fQry.ParamByName('PKID').AsString := Game.SessionID;
+  fQry.ParamByName('CurrentQuestion').AsString := Game.CurrentQuestion;
+  fQry.ParamByName('GameState').AsInteger := Integer(Game.GameState);
+  fQry.ExecSQL;
+end;
+
+procedure TDataModel.UpdateUser(const User: IUserData);
+const
+  cSQL = 'UPDATE tbl_users SET Score=:Score, PlayerState=:PlayerState, LastUpdate=Now() WHERE PKID=:PKID;';
+begin
+  fQry.SQL.Text := cSQL;
+  fQry.ParamByName('PKID').AsString := User.UserID;
+  fQry.ParamByName('Score').AsInteger := User.Score;
+  fQry.ParamByName('PlayerState').AsInteger := Integer(User.PlayerState);
+  fQry.ExecSQL;
+end;
+
+procedure TDataModel.getSuggestedAnswers( const GameID: string; const Cards: IList<ICardData> );
+const
+  cSelectAnswers = 'SELECT g.PKID ID, a.str_answer Title FROM tbl_gameanswers g JOIN tbl_answers a ON g.FKAnswerID = a.PKID WHERE state=:state and g.FKGameID=:gameid;';
+var
+  tmpQry: TFDQuery;
+  Card: ICardData;
+begin
+  tmpQry := TFDQuery.Create(nil);
+  try
+    tmpQry.Connection := fConn;
+    tmpQry.SQL.Text := cSelectAnswers;
+    tmpQry.ParamByName('gameid').AsString := GameID;
+    tmpQry.ParamByName('state').AsInteger := Integer(TGameCardState.csAnswerInPlay);
+    tmpQry.Active := True;
+    tmpQry.First;
+    while not tmpQry.EOF do begin
+      Card := TCardData.Create;
+      Card.CardID := tmpQry.FieldByName('ID').AsString;
+      Card.Title := tmpQry.FieldByName('Title').AsString;
+      Cards.Add(Card);
+      tmpQry.Next;
+    end;
+    tmpQry.Active := False;
+  finally
+    tmpQry.Free;
+  end;
+end;
+
+function TDataModel.getQuestionText( const QuestionID: string ): string;
+const
+  cSelectAnswers = 'SELECT str_question FROM tbl_questions WHERE PKID=:QuestionID;';
+var
+  tmpQry: TFDQuery;
+  Card: ICardData;
+begin
+  tmpQry := TFDQuery.Create(nil);
+  try
+    tmpQry.Connection := fConn;
+    tmpQry.SQL.Text := cSelectAnswers;
+    tmpQry.ParamByName('QuestionID').AsString := QuestionID;
+    tmpQry.Active := True;
+    tmpQry.First;
+    Result := tmpQry.FieldByName('str_question').AsString;
+    tmpQry.Active := False;
+  finally
+    tmpQry.Free;
+  end;
+end;
+
+procedure TDataModel.getCards( const UserID: string; const Cards: IList<ICardData> );
+begin
+
+end;
+
+function TDataModel.getCurrentTurn(AuthToken: string): ITurnData;
+var
+  GameID: string;
+  Game: IGameData;
+  Users: IList<IUserData>;
+  User: IUserData;
+  IsJudge: boolean;
+  idx: nativeuint;
+begin
+  GameID := getGameIDByUserID(AuthToken);
+  Game := FindGameByID(GameID);
+  Users := getUsers(AuthToken);
+  IsJudge := False;
+  for idx := 0 to pred(Users.Count) do begin
+    User := Users[idx];
+    if (User.UserID=AuthToken) then begin
+      if User.PlayerState=TPlayerState.psJudgeWaitingForSubmit then begin
+        IsJudge := True;
+      end;
+      break;
+    end;
+  end;
+  Result := TTurnData.Create;
+  Result.Question := getQuestionText( Game.CurrentQuestion );
+  getSuggestedAnswers( Game.SessionID, Result.Answers );
+  if not IsJudge then begin
+    getCards( User.UserID, Result.Cards );
+  end;
 end;
 
 function TDataModel.getGameIDByUserID(const Key: string): string;
@@ -438,7 +608,7 @@ begin
   fQry.First;
   while not fQry.EOF do begin
     NewUserData := TUserData.Create();
-    QueryToUserData( fQry, NewUserData, FALSE );
+    QueryToUserData( fQry, NewUserData );
     Result.Add( NewUserData );
     fQry.Next;
   end;
